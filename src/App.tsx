@@ -26,13 +26,17 @@ const schema = yup
     gender: yup.string().required(),
     age: yup
       .number()
+      .required()
+      .nullable(true)
       .positive()
       .round("round")
-      .required("Ahh, you forgot to assing the age"),
+      .transform((_, val) => (val ? Number(val) : null)),
+    // .required("Ahh, you forgot to assing the age"),
     email: yup
       .string()
-      .min(10, "This email should have a minimum of 10 characters")
-      .email(),
+      .required()
+      .email()
+      .min(10, "This email should have a minimum of 10 characters"),
     // website: string().url().nullable(),
     // createdOn: date().default(() => new Date()),
   })
@@ -59,13 +63,13 @@ export default function App() {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
 
-  // console.log(errors);
+  console.log(errors);
 
   // Subscribe to value changes
   // console.log(watch());
   // console.log(watch("firstName"));
-  const firstName = watch("firstName");
-  const lastName = watch("lastName");
+  // const firstName = watch("firstName");
+  // const lastName = watch("lastName");
   const gender = watch("gender");
   const email = watch("email");
   const age = watch("age");
@@ -90,11 +94,11 @@ export default function App() {
             min: 4,
           })}
           placeholder="First Name"
+          autoComplete="off"
         />
 
-        <p>{firstName}</p>
-
         {errors.firstName?.message && <p>{errors.firstName?.message}</p>}
+        <hr />
 
         <label style={{ display: "block" }}>Last Name</label>
         {/* include validation with required or other standard HTML validation rules */}
@@ -105,24 +109,26 @@ export default function App() {
             minLength: { value: 4, message: "Min length is 4" },
           })}
           placeholder="Last Name"
+          autoComplete="off"
         />
-
-        <p>{lastName}</p>
 
         {/* errors will return when field validation fails  */}
         {errors.lastName?.message && <p>{errors.lastName?.message}</p>}
         {/* {errors.lastName && <p>Last name is required</p>} */}
+        <hr />
 
         <label style={{ display: "block" }}>Age</label>
         <input
-          {...register("age", { valueAsNumber: true })}
+          // type="number"
+          // step="0.001"
+          {...register("age")}
           placeholder="Age"
+          autoComplete="off"
         />
-
-        <p>{age}</p>
 
         {/* errors will return when field validation fails  */}
         {errors.age?.message && <p>{errors.age.message}</p>}
+        <hr />
 
         <label style={{ display: "block" }}>Gender</label>
         <select {...register("gender")}>
@@ -132,16 +138,15 @@ export default function App() {
           <option value="other">other</option>
         </select>
 
-        <p>{gender}</p>
-
         {/* errors will return when field validation fails  */}
         {errors.gender?.message && <p>{errors.gender.message}</p>}
+        <hr />
 
         <label style={{ display: "block" }}>Email</label>
-        <input {...register("email")} placeholder="E-Mail" />
+        <input {...register("email")} placeholder="E-Mail" autoComplete="off" />
 
-        <p>{email}</p>
         {errors.email?.message && <p>{errors.email.message}</p>}
+        <hr />
 
         <input type="submit" />
       </form>
