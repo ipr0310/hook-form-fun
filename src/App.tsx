@@ -47,11 +47,11 @@ export default function App() {
   } = useForm<Inputs>({
     resolver: yupResolver(schema),
     defaultValues: {
-      firstName: "Mad",
-      lastName: "Max",
-      // age: 100000,
-      gender: GenderEnum.other,
-      email: "",
+      // firstName: "Mad",
+      // lastName: "Max",
+      // // age: 100000,
+      // gender: GenderEnum.other,
+      // email: "",
     },
   });
 
